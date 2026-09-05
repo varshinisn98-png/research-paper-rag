@@ -12,12 +12,14 @@ if not HF_TOKEN:
 client = InferenceClient(
     api_key=HF_TOKEN
 )
+
+
 def generate_answer(question, context):
 
     prompt = f"""
-You are a research paper question-answering assistant.
+You are a research paper assistant.
 
-Answer the question using ONLY the information provided in the context.
+Answer the question using ONLY the information in the context below.
 
 If the answer is not available in the context, say:
 "The answer is not available in the provided research paper."
@@ -43,18 +45,3 @@ Give a clear and concise answer.
     )
 
     return response.choices[0].message.content
-
-if __name__ == "__main__":
-    context = """
-    The present study was conducted with 120 undergraduate students
-    enrolled in three different colleges affiliated to Bangalore University.
-    Participants included 60 male and 60 female students aged between
-    18 to 22 years, selected through random sampling technique.
-    """
-
-    question = "Who participated in the study?"
-
-    answer = generate_answer(question, context)
-
-    print("Question:", question)
-    print("Answer:", answer)

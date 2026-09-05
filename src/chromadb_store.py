@@ -1,9 +1,6 @@
-
 import chromadb
 
-client = chromadb.PersistentClient(
-    path="./chroma_db"
-)
+client = chromadb.PersistentClient(path="./chroma_db")
 
 collection = client.get_or_create_collection(
     name="research_papers"
@@ -11,12 +8,6 @@ collection = client.get_or_create_collection(
 
 def store_chunks(chunks, embeddings):
     ids = [f"chunk_{i}" for i in range(len(chunks))]
-
-    # Prevent duplicate-ID error if you run test twice
-    try:
-        collection.delete(ids=ids)
-    except Exception:
-        pass
 
     collection.add(
         ids=ids,

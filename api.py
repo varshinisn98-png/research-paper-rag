@@ -4,11 +4,10 @@ from pydantic import BaseModel
 from src.retrieval import search_chromadb
 from src.llm import generate_answer
 
-
 app = FastAPI(
     title="Research Paper RAG API",
-    description="Question answering system for research papers using Retrieval-Augmented Generation",
-    version="1.0.0"
+    description="Research Paper Question Answering using RAG",
+    version="1.0"
 )
 
 
@@ -26,16 +25,15 @@ def home():
 @app.post("/ask")
 def ask_question(request: QuestionRequest):
 
-    # Step 1: Retrieve relevant chunks from ChromaDB
-    results = search_chromadb(request.question)
+    results = search_chromadb(
+        request.question,
+        n_results=5
+    )
 
-    # Step 2: Extract retrieved text
-    documents = results.get("documents", [[]])[0]
+    documents = results["documents"][0]
 
-    # Step 3: Combine retrieved chunks into context
     context = "\n\n".join(documents)
 
-    # Step 4: Generate answer using the LLM
     answer = generate_answer(
         request.question,
         context

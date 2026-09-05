@@ -1,4 +1,4 @@
- import fitz
+import fitz
 
 def extract_text(pdf_path):
     doc = fitz.open(pdf_path)
